@@ -1,43 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
-int binarySearch(int array[],int size,int value){
-    int mid,lb,ub;
-    lb=0;
-    ub=size-1;
+int binarySearch(int array[],int low, int high,int value){
 
-    mid = (lb+ub)/2;
-    mid = floor(mid);
+    while(low<=high){
 
-    while(lb<ub){
+        int mid = low+(high-low)/2;
+
         if(array[mid] == value){
-            // printf("%d is at %d",array[mid],mid);
             return mid;
         }else if(value>array[mid]){
-            lb = mid+1;
-            mid = (lb+ub)/2;
-            mid = floor(mid);
-            
+            low = mid+1;
         }else{
-            ub = mid-1;
-            mid = (lb+ub)/2;
-            mid = floor(mid);
+            high = mid-1;
         }
     }
-    return mid;
+    return -1;
 }
 
 int main(){
 
-    int size,i;
+    int size,i,*array,value;
 
-    int arr[]= {1,2,3,4,6,7,8,9};
+    printf("Enter the size of the array: ");
+    scanf("%d",&size);
 
-    size = sizeof(arr)/sizeof(arr[0]);
+    array = (int*)malloc(size*sizeof(int));
 
-    int res = binarySearch(arr,size,8);
-    printf("%d",res);
+    if (array == NULL) { // checking memory allocation of the array
+        printf("Memory not allocated.\n"); 
+    } 
+    else { 
+        // Memory allocated 
+        printf("Memory successfully allocated using "
+               "malloc.\n"); 
+
+        printf("Enter the elements of the array: \n\n");
+
+        for(int i=0;i<size;i++){
+            printf("Enter the %d element of the array: ", i);
+            scanf("%d",&array[i]);
+        }
+    }
+
+    printf("Enter the element to find in the array: ");
+    scanf("%d",&value);
+
+    int res = binarySearch(array,array[0],array[size-1],value);
+
+    if(res==-1){
+        printf("Element not found in array");
+    }else{
+        printf("%d is at index %d",value,res);
+    }
 
     return 0;
 }
